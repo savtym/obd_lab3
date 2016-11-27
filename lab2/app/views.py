@@ -2,11 +2,12 @@
 Definition of views.
 """
 
-import db
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
+import mysql.connector
+from .db import Db
 
 def home(request):
     """Renders the home page."""
@@ -56,6 +57,21 @@ def products(request):
             'title':'Products',
             'message':'All products Manto',
             'year':datetime.now().year,
+            'products':Db.getListProducts,
+        }
+    )
+
+def product(request):
+    """Renders the products page."""
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/product.html',
+        {
+            'title':'Product',
+            'message':'All products Manto',
+            'year':datetime.now().year,
+            'product':Db.getListProduct(),
         }
     )
 

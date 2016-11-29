@@ -40,3 +40,26 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.products {
+    opacity: .75;
+    transition: all .5s;
+}
+
+.products:hover {
+    opacity: 1;
+} 
+
+.products ul {
+    list-style: none;
+}
+
+.products img {
+    width: 100%;
+}
+
+.product img {
+    max-width: 600px;
+    float: left;
+    margin-right: 20px;
+}

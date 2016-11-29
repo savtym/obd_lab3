@@ -7,6 +7,7 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 import mysql.connector
+from .forms import ProductForm
 from .db import Db
 
 def home(request):
@@ -61,7 +62,7 @@ def products(request):
         }
     )
 
-def product(request):
+def product(request, id = 0):
     """Renders the products page."""
     assert isinstance(request, HttpRequest)
     return render(
@@ -69,9 +70,9 @@ def product(request):
         'app/product.html',
         {
             'title':'Product',
-            'message':'All products Manto',
+            'message':'Product ' + id + ' of Manto',
             'year':datetime.now().year,
-            'product':Db.getListProduct(),
+            'product':Db.getProduct(id),
         }
     )
 
@@ -86,5 +87,30 @@ def users(request):
             'message':'All users Manto',
             'users' : db.getListUsers(),
             'year':datetime.now().year,
+        }
+    )
+
+def addProduct(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            name = form.data['name']
+            title = form.data['title']
+            categoryId = form.data['category']
+            manufactoryId = form.data['manufactory']
+            Db.addProduct(name, title, categoryId, manufactoryId)
+            #return redirect('app.views.products')
+    else:
+        form = ProductForm()
+    return render(
+        request,
+        'app/addProduct.html',
+        {
+            'title':'Users',
+            'message':'All users Manto',
+            'year':datetime.now().year,
+            'form' : form,
+            'manufactories' : Db.getListManufactories,
+            'categories' : Db.getListCategories,
         }
     )

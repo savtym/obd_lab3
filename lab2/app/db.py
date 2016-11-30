@@ -7,6 +7,7 @@ def getConnect(query):
     cursor.execute(query)
     result = dictfetchall(cursor)
     cursor.close()
+    connect.commit()
     return result
 
 def dictfetchall(cursor): 
@@ -31,10 +32,13 @@ class Db():
         return getConnect('select * from app_manufactories;')
 
     def getListCategories():
-        return getConnect('select * from app_categories;')
+        return getConnect("select * from app_categories;")
 
     def getProduct(id):
-        return getConnect('select p.id, p.name, p.title, c.name nameCategory, m.name nameManufactory from app_products p join app_categories c on p.category_id = c.id join app_manufactories m on p.manufactory_id = m.id where p.id = %s' % id)[0]
+        return getConnect('select p.id, p.name, p.title, c.id idCategory, c.name nameCategory, m.id idManufactory, m.name nameManufactory from app_products p join app_categories c on p.category_id = c.id join app_manufactories m on p.manufactory_id = m.id where p.id = %s' % id)[0]
 
     def addProduct(name, title, categoryId, manufactoryId):
-        return getConnect("insert into app_products (name, title, category_id, manufactory_id) values(%s, %s, %s, %s);" % (name, title, categoryId, manufactoryId))
+        return getConnect("insert into app_products (name, title, category_id, manufactory_id) values('%s', '%s', %s, %s);" % (name, title, categoryId, manufactoryId))
+
+    def editProduct(id, name, title, categoryId, manufactoryId):
+        return getConnect("update app_products set name = '%s', title = '%s', category_id = %s, manufactory_id = %s where id = %s" % (name, title, categoryId, manufactoryId, id))

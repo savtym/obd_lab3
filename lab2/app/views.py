@@ -106,10 +106,38 @@ def addProduct(request):
         request,
         'app/addProduct.html',
         {
-            'title':'Users',
+            'title':'Add product',
             'message':'All users Manto',
             'year':datetime.now().year,
             'form' : form,
+            'product' : "",
+            'manufactories' : Db.getListManufactories,
+            'categories' : Db.getListCategories,
+        }
+    )
+
+def editProduct(request, id):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            name = form.data['name']
+            title = form.data['title']
+            categoryId = form.data['category']
+            manufactoryId = form.data['manufactory']
+            Db.editProduct(id, name, title, categoryId, manufactoryId)
+            #return redirect('app.views.products')
+    else:
+        product = Db.getProduct(id)
+        form = ProductForm(initial={'name': product['name'], 'title' : product['title']})
+    return render(
+        request,
+        'app/addProduct.html',
+        {
+            'title':'Edit product',
+            'message':'All users Manto',
+            'year':datetime.now().year,
+            'form' : form,
+            'product' : product,
             'manufactories' : Db.getListManufactories,
             'categories' : Db.getListCategories,
         }

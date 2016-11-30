@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^product/([0-9])', app.views.product),
     url(r'^users', app.views.users, name='users'), 
     url(r'^product/$', app.views.addProduct, name='addProduct'),
+    url(r'^product/edit/([0-9])$', app.views.editProduct, name='editProduct'),
     url(r'^login/$',
         django.contrib.auth.views.login,
         {

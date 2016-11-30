@@ -1,7 +1,7 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
-  <h1>New product</h1>
+  <h1>{{ title }}</h1>
   <form method="POST" class="post-form">
   	{% csrf_token %}
     {{ form.name }}
@@ -18,7 +18,7 @@
 		  <label for="sel2">Manufactories:</label>
 		  <select class="form-control" id="sel2" name="manufactory">
 			{% for manufactory in manufactories %}
-		    <option value="{{ manufactory.id }}">{{ manufactory.name }}</option>
+		    <option value="{{ manufactory.id }}" {% if manufactory.id == form.id %} selected {% endif %}>{{ manufactory.name }}</option>
 			{% endfor %}
 		  </select>
 		</div>

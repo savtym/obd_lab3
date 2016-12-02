@@ -1,0 +1,21 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+
+<h2>{{ title }}</h2>
+<div class="row product">
+    <div class="col-md-12">
+			<img src="/static/app/img/pict.jpg" alt="product">
+			<h2>{{ product.name }}</h2>
+			<p><b>Description:</b> {{ product.title }}</p>
+			<p><b>Category:</b> {{ product.nameCategory}}</p>
+			<p><b>Manufactory:</b> {{ product.nameManufactory}}</p>
+			<a class="btn btn-danger btn-large" href="/product/delete/{{ product.id }}">Remove</a>
+			<a class="btn btn-primary btn-large" href="/product/edit/{{ product.id }}">Edit</a>
+			<a class="btn btn-info btn-large" href="/product/get/{{ product.id }}">Get</a>
+		</div>
+</div>
+
+    
+{% endblock %}

@@ -3,6 +3,7 @@ Definition of models.
 """
 
 from django.db import models
+from django.forms import ModelForm
 
 # Create your models here.
 
@@ -25,3 +26,9 @@ class Clients(models.Model):
     lname = models.CharField(max_length = 30)
     date = models.DateField()
     products = models.ForeignKey(Products)
+
+class ProductsForm(ModelForm):
+    class Meta:
+        model = Products
+        fields = ['name', 'title', 'category', 'manufactory']
+

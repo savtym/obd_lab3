@@ -10,6 +10,10 @@ import mysql.connector
 from .forms import ProductForm
 from .db import Db
 from django.shortcuts import redirect
+from .models import Products
+from .models import Categories
+from .models import Manufactories
+from .models import Clients
 
 def home(request):
     """Renders the home page."""
@@ -59,7 +63,7 @@ def products(request):
             'title':'Products',
             'message':'All products Manto',
             'year':datetime.now().year,
-            'products':Db.getListProducts,
+            'products': Products.objects.all(),
         }
     )
 
@@ -70,10 +74,10 @@ def product(request, id):
         request,
         'app/product.html',
         {
-            'title':'Product',
+            'title':'Product' ,
             'message':'Product ' + id + ' of Manto',
             'year':datetime.now().year,
-            'product':Db.getProduct(id),
+            'product': Products.objects.get(pk = id),
         }
     )
 
@@ -100,7 +104,7 @@ def getProduct(request, id):
         {
             'title':'Product to add in cart',
             'message':'All users Manto',
-            'users' : Db.getProductForUser(id, 2), # 2 - id user 
+            'users' : ProductForm(),
             'year':datetime.now().year,
         }
     )
@@ -138,16 +142,22 @@ def editProduct(request, id):
     if request.user.is_authenticated:
         if request.method == "POST":
             form = ProductForm(request.POST)
-            if form.is_valid():
-                name = form.data['name']
-                title = form.data['title']
-                categoryId = form.data['category']
-                manufactoryId = form.data['manufactory']
-                Db.editProduct(id, name, title, categoryId, manufactoryId)
+            if form.is_valid():                
+                product = Products.objects.get(pk = id)
+                product.name = form.data['name']
+                product.title = form.cleaned_data['title']
+                product.manufactory = Manufactories.objects.get(pk = form.data['manufactory'])
+                product.category = Categories.objects.get(pk = form.data['category'])
+                product.save()
                 return redirect('/product/' + id)
         else:
-            product = Db.getProduct(id)
-            form = ProductForm(initial={'name': product['name'], 'title' : product['title']})
+            product = Products.objects.get(pk = id)
+            form = ProductForm(initial={
+                'name': product.name, 
+                'title' : product.title, 
+                'manufactory' : product.manufactory.id,
+                'category' : product.category.id,
+            })
         return render(
             request,
             'app/addProduct.html',
@@ -156,9 +166,6 @@ def editProduct(request, id):
                 'message':'All users Manto',
                 'year':datetime.now().year,
                 'form' : form,
-                'product' : product,
-                'manufactories' : Db.getListManufactories,
-                'categories' : Db.getListCategories,
             }
         )
     else:

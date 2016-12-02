@@ -27,7 +27,10 @@
                     <li><a href="{% url 'products' %}">Products</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
+                    {% if user.is_authenticated %}
                     <li><a href="{% url 'addProduct' %}">Add Product</a></li>
+                    <li><a href="{% url 'users' %}">Users</a></li>
+                    {% endif %}
                 </ul>
                 {% include 'app/loginpartial.html' %}
             </div>

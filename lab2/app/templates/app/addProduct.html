@@ -10,7 +10,7 @@
 		  <label for="sel1">Categories:</label>
 		  <select class="form-control" id="sel1" name="category">
 			{% for category in categories %}
-		    <option value="{{ category.id }}">{{ category.name }}</option>
+		    <option value="{{ category.id }}" {% if category.id == product.idCategory %} selected {% endif %}>{{ category.name }}</option>
 			{% endfor %}
 		  </select>
 		</div>
@@ -18,7 +18,7 @@
 		  <label for="sel2">Manufactories:</label>
 		  <select class="form-control" id="sel2" name="manufactory">
 			{% for manufactory in manufactories %}
-		    <option value="{{ manufactory.id }}" {% if manufactory.id == product.manufactoryId %} selected {% endif %}>{{ manufactory.name }}</option>
+		    <option value="{{ manufactory.id }}" {% if manufactory.id == product.idManufactory %} selected {% endif %}>{{ manufactory.name }}</option>
 			{% endfor %}
 		  </select>
 		</div>

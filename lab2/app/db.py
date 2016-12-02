@@ -38,7 +38,7 @@ class Db():
         return getConnect('update app_clients set product_id = %s where id = %s' % (productId, id))
 
     def getProduct(id):
-        return getConnect("select * from app_products where id = %s;" % id)[0]
+        return getConnect("select p.id, p.name, p.title, c.id idCategory, c.name nameCategory, m.id idManufactory, m.name nameManufactory from app_products p join app_categories c on p.category_id = c.id join app_manufactories m on p.manufactory_id = m.id where p.id = %s;" % id)[0]
 
     def addProduct(name, title, categoryId, manufactoryId):
         return getConnect("insert into app_products (name, title, category_id, manufactory_id) values('%s', '%s', %s, %s);" % (name, title, categoryId, manufactoryId))

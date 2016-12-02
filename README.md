@@ -1,0 +1,3 @@
+# obd_lab3
+
+16. Once: READ UNCOMMITTED, READ COMMITTED
